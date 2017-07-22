@@ -4,7 +4,7 @@ FROM ubuntu:xenial
 RUN apt-get update
 RUN apt-get purge usbip* libusbip*
 RUN apt-get install -y linux-tools-generic module-init-tools linux-image-generic hwdata autossh
-RUN depmod
+#RUN depmod
 #RUN modprobe usbip_host
 RUN echo 'usbip_host' >> /etc/modules
 #RUN /usr/lib/linux-tools/`uname -r`/usbipd
