@@ -1,2 +1,3 @@
 # usbip-ssh-docker
-Tunnels USB devices over ssh using docker, with automatic device detection.
+
+This docker container, when ran properly with docker-compose, will share all of the host USB devices with the target machine.
