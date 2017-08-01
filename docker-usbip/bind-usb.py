@@ -1,6 +1,11 @@
 #!/usr/bin/python3
 import subprocess
+from subprocess import Popen, PIPE, STDOUT, DEVNULL
 import re
+import sys
+import time
+import os
+
 
 # List all local bindable usb ports
 result = subprocess.run(['usbip', 'list', '--parsable' , '--local'], stdout=subprocess.PIPE)
@@ -13,16 +18,17 @@ for i, match in enumerate(matches):
     matches[i] = match
     
     
-import os
 uname = os.uname().release
 
 subprocess.run(['/usr/lib/linux-tools/' + uname + "/" + 'usbipd', '-D'])
 
-import time
+try:
+    while True:
+        for port in matches:
+            result = subprocess.call(['/usr/lib/linux-tools/' + uname + '/' + 'usbip', 'bind', '-b' , port], stdout=DEVNULL, stderr=DEVNULL)
+            del result
+            time.sleep(5)
+except KeyboardInterrupt:
+    print("Exiting. usbip daemon could still be running")
 
-while 1:
-    for port in matches:
-        result = subprocess.run(['/usr/lib/linux-tools/' + uname + '/' + 'usbip', 'bind', '-b' , port])
-        del result
-    time.sleep(5)
-    
+sys.exit(0)
